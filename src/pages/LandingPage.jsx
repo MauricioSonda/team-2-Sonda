@@ -2,17 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import heroBowl from '../assets/plato.png'; 
 import { api } from '../api/axios';
+import { usePremium } from '../hooks/usePremium';
 import tomateImg from '../assets/tomate.png';
 import customLogo from '../assets/logo.png';
 
 
 export default function LandingPage() {
   const navigate = useNavigate();
+  const { isPremium, loading: premiumLoading } = usePremium();
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const token = localStorage.getItem('access_token');
 
   useEffect(() => {
-    // Fetch top 3 latest recipes from Laravel API
+    if (token && !premiumLoading && !isPremium) {
+      navigate('/premium?required=true', { replace: true });
+    }
+  }, [token, isPremium, premiumLoading, navigate]);
+
+  useEffect(() => {
     api.get('/recipes?per_page=3')
       .then(response => {
         setRecipes(response.data.data);
@@ -28,7 +36,6 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white font-sans text-brand-dark overflow-hidden pb-12 relative">
       
-      {/* Background Shape - CSS puro, limpio y curveado */}
       <div 
         className="absolute top-0 right-0 w-[100%] md:w-[65%] h-[750px] md:h-[950px] bg-brand-yellow z-0"
         style={{
@@ -37,10 +44,8 @@ export default function LandingPage() {
         aria-hidden="true"
       ></div>
 
-      {/* Dynamic Header Section */}
       <header className="relative w-full pt-8 pb-16 md:pt-12 md:pb-24 flex flex-col items-center z-10">
         
-        {/* Navigation / Header Actions (Mock for visual presence, optional to extract) */}
         <div className="absolute top-0 left-0 w-full z-50 px-8 h-24 flex items-center">
           <div className="max-w-[1600px] mx-auto w-full flex justify-between items-center h-full">
             <Link to="/" className="flex items-center group gap-4">
@@ -68,7 +73,6 @@ export default function LandingPage() {
 
         <div className="container mx-auto px-6 max-w-7xl flex flex-col md:flex-row items-center justify-between z-20 relative mt-6 md:mt-10">
           
-          {/* Text Content */}
           <div className="w-full md:w-[45%] flex flex-col items-start gap-6 pt-10 md:pt-0">
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight text-gray-900 relative z-20">
               Inspírate y cocina <br /> con nosotros
@@ -84,23 +88,16 @@ export default function LandingPage() {
             </button>
           </div>
 
-          {/* Hero Image with Floating Elements */}
           <div className="w-full md:w-[50%] mt-12 md:mt-0 flex justify-center relative">
             
-            {/* Soft shadow underneath the bowl for depth */}
             <div className="absolute bottom-[-5%] w-[70%] h-[15%] bg-black/20 blur-2xl rounded-[100%]"></div>
             
-            {/* Floating Ingredients (Decorations) */}
             <div className="absolute inset-0 z-20 pointer-events-none">
-                {/* Lettuce */}
                 <img src="https://cdn-icons-png.flaticon.com/512/3014/3014541.png" className="absolute top-[10%] left-[10%] w-16 h-16 drop-shadow-lg opacity-90 -rotate-12" alt="" />
-                {/* Tomato */}
                 <img src="https://cdn-icons-png.flaticon.com/512/1202/1202125.png" className="absolute top-[5%] right-[25%] w-12 h-12 drop-shadow-lg opacity-90 rotate-12" alt="" />
-                {/* Corn */}
                 <div className="absolute top-[20%] right-[10%] w-6 h-6 bg-yellow-400 rounded-full drop-shadow-md"></div>
                 <div className="absolute bottom-[20%] left-[5%] w-5 h-5 bg-yellow-400 rounded-full drop-shadow-md"></div>
                 <div className="absolute bottom-[10%] right-[15%] w-7 h-7 bg-yellow-400 rounded-full drop-shadow-md"></div>
-                {/* Olives/Beans */}
                 <div className="absolute top-[0%] right-[40%] w-6 h-8 bg-gray-900 rounded-[50%] rotate-45 drop-shadow-md"></div>
                 <div className="absolute top-[30%] right-[5%] w-5 h-7 bg-gray-900 rounded-[50%] -rotate-45 drop-shadow-md"></div>
                 <div className="absolute bottom-[5%] left-[15%] w-6 h-8 bg-gray-900 rounded-[50%] rotate-[60deg] drop-shadow-md"></div>
@@ -121,16 +118,13 @@ export default function LandingPage() {
         </div>
       </header>
 
-      {/* Popular Recipes Section */}
       <section className="container mx-auto px-6 max-w-6xl mt-16 text-center">
         <h2 className="text-3xl md:text-4xl font-extrabold text-gray-800 mb-10">
           Descubre las recetas más populares
         </h2>
 
-        {/* Mock Recipe Grid (Original Figma Design) */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 text-left">
           
-          {/* Card 1 */}
           <article className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow cursor-pointer border border-gray-100 p-3 pb-6 group">
             <div className="w-full h-48 bg-gray-200 rounded-2xl overflow-hidden">
                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Ensalada de pollo" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
@@ -148,7 +142,6 @@ export default function LandingPage() {
             </div>
           </article>
 
-          {/* Card 2 */}
           <article className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow cursor-pointer border border-gray-100 p-3 pb-6 group">
             <div className="w-full h-48 bg-gray-200 rounded-2xl overflow-hidden">
                 <img src="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Mole poblano con pollo" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
@@ -166,7 +159,6 @@ export default function LandingPage() {
             </div>
           </article>
 
-          {/* Card 3 */}
           <article className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow cursor-pointer border border-gray-100 p-3 pb-6 group">
             <div className="w-full h-48 bg-gray-200 rounded-2xl overflow-hidden">
                 <img src="https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Pan de cazón" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>

@@ -30,10 +30,8 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-[#ffb800] relative overflow-hidden flex flex-col font-sans">
       
-      {/* Top Header Franja Naranja */}
       <header className="relative z-50 w-full h-24 bg-[#ffb800] px-8 flex justify-between items-center flex-shrink-0 shadow-md">
         <div className="max-w-[1600px] mx-auto w-full flex justify-between items-center h-full">
-          {/* Left Side: Logo */}
           <div className="flex items-center gap-6">
             <Link to="/" className="flex items-center group gap-4">
               <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-inner transform group-hover:scale-105 transition-transform overflow-hidden p-2">
@@ -43,7 +41,6 @@ export default function Login() {
             </Link>
           </div>
           
-          {/* Navigation Buttons (Pill style) */}
           <div className="flex gap-4">
             <Link to="/login" className="px-6 py-2.5 bg-white text-[#ffb800] font-black text-lg md:text-xl rounded-full shadow hover:bg-gray-50 transition-colors">
               Ingresar
@@ -55,44 +52,37 @@ export default function Login() {
         </div>
       </header>
 
-      {/* Main Content Area (Background Blobs & Split Layout) */}
       <div className="relative flex-grow flex items-center justify-center w-full overflow-hidden bg-[#faf9f6]">
         
-        {/* BLOB 1: Blanco/crema grande a la izquierda */}
         <div 
           className="absolute top-[-10%] left-[-5%] w-[120%] md:w-[65%] h-[120%] bg-white z-0 shadow-sm" 
           style={{ borderBottomRightRadius: '900px 700px', borderTopRightRadius: '200px' }}
           aria-hidden="true"
         ></div>
         
-        {/* BLOB 2: Único naranja grande en la derecha superior */}
         <div 
           className="absolute top-0 right-0 w-[80%] md:w-[45%] h-[60%] md:h-[70%] bg-[#ffb800]/80 z-0"
           style={{ borderBottomLeftRadius: '100% 70%' }}
           aria-hidden="true"
         ></div>
 
-        {/* BLOB 3: Único naranja pequeño en la esquina inferior derecha */}
         <div 
           className="absolute bottom-[-5%] right-[-5%] w-[40%] md:w-[35%] h-[15%] md:h-[20%] bg-[#ffb800]/80 z-0"
           style={{ borderTopLeftRadius: '100% 120%' }}
           aria-hidden="true"
         ></div>
 
-        {/* Inner Content */}
         <main className="relative z-10 flex flex-col md:flex-row items-center justify-center max-w-7xl mx-auto w-full px-6 py-6 gap-12">
         
-        {/* Left Side: Chef Image */}
         <div className="hidden md:flex w-1/2 justify-center items-center relative">
           <img 
             src={chefImg} 
             alt="Chef sonriente con ingredientes" 
             className="w-full max-w-lg object-contain drop-shadow-2xl z-10"
-            style={{ mixBlendMode: 'multiply' }} // Ayuda a que los fondos blancos de la IA se mezclen
+            style={{ mixBlendMode: 'multiply' }}
           />
         </div>
 
-        {/* Right Side: Login Card */}
         <div className="w-full md:w-1/2 flex justify-center mt-8 md:mt-0">
           <div className="bg-white rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.1)] p-8 md:p-12 max-w-md w-full flex flex-col relative overflow-hidden">
             
@@ -109,7 +99,6 @@ export default function Login() {
 
             <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
               
-              {/* Email Input */}
               <div className="flex flex-col">
                 <label className="text-gray-600 font-semibold mb-2 text-sm">Correo electrónico</label>
                 <div className="relative">
@@ -127,7 +116,6 @@ export default function Login() {
                 </div>
               </div>
 
-              {/* Password Input */}
               <div className="flex flex-col">
                 <label className="text-gray-600 font-semibold mb-2 text-sm">Contraseña</label>
                 <div className="relative">
@@ -142,14 +130,12 @@ export default function Login() {
                 </div>
               </div>
 
-              {/* Forgot Password Link */}
               <div className="flex justify-end mt-1">
                 <a href="#" className="text-sm font-semibold text-[#5c7a33] hover:text-[#4a6328] transition">
                   ¿Olvidaste tu contraseña?
                 </a>
               </div>
 
-              {/* Submit Button */}
               <button 
                 type="submit" 
                 disabled={loading}
@@ -159,19 +145,16 @@ export default function Login() {
               </button>
             </form>
 
-            {/* Signup Link */}
             <p className="text-center mt-6 text-gray-500 font-medium">
               ¿No tienes una cuenta? <Link to="/register" className="text-[#5c7a33] font-bold hover:underline">Regístrate</Link>
             </p>
 
-            {/* Divider */}
             <div className="flex items-center my-6">
               <div className="flex-1 border-t border-gray-200"></div>
               <span className="px-4 text-gray-400 text-sm font-medium">O continúa con</span>
               <div className="flex-1 border-t border-gray-200"></div>
             </div>
 
-            {/* Social Buttons */}
             <div className="flex justify-center gap-4 mb-2">
               <button className="flex-1 flex items-center justify-center py-3 bg-[#3b5998] hover:bg-[#344e86] text-white rounded-xl shadow-sm transition hover:shadow-md">
                 <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>

@@ -16,14 +16,12 @@ const Categories = () => {
 
 
   useEffect(() => {
-    // Fetch categories
     api.get('/categories')
       .then(res => setCategories(res.data.data))
       .catch(console.error)
       .finally(() => setLoading(false));
   }, []);
 
-  // Handle creating a new category
   const handleCreateCategory = async (e) => {
     e.preventDefault();
     if (newCategoryName.trim() !== '') {
@@ -40,17 +38,14 @@ const Categories = () => {
     }
   };
 
-  // Filter categories based on search input
   const filteredCategories = categories.filter(cat => 
     cat.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className="bg-gray-50 min-h-screen font-sans flex flex-col">
-      {/* Header Area */}
       <header className="w-full h-24 bg-[#ffb800] px-8 flex justify-between items-center shadow-md relative z-50">
         <div className="max-w-[1400px] mx-auto w-full flex justify-between items-center h-full">
-          {/* Logo Section */}
           <Link to="/" className="flex items-center gap-4 group">
             <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-inner transform group-hover:scale-105 pointer-events-auto transition-transform p-2">
               <img src={tomateImg} alt="Tomate Logo" className="w-full h-full object-contain" />
@@ -58,7 +53,6 @@ const Categories = () => {
               <img src={customLogo} alt="Salsa de Tomate" style={{width: '250px', marginTop: '8px'}} />
           </Link>
 
-          {/* User Actions */}
           <nav className="flex items-center gap-3">
              <Link to="/login" className="hidden sm:inline-block px-5 py-2.5 rounded-full font-bold text-orange-900 bg-white/40 hover:bg-white/60 transition-colors">
               Ingresar
@@ -73,19 +67,14 @@ const Categories = () => {
         </div>
       </header>
 
-      {/* Main Content Area */}
       <main className="flex-grow w-full max-w-[1400px] mx-auto p-4 md:p-8 lg:p-12 relative z-10 w-full">
 
-        {/* Single Outer White Container */}
         <div className="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-sm border border-gray-100 relative overflow-hidden min-h-[700px]">
           
-          {/* Decorative background element inside the white wrapper */}
           <div className="absolute top-0 right-0 w-[250px] h-[250px] md:w-[400px] md:h-[400px] bg-[#fef3c7] rounded-bl-full opacity-60 pointer-events-none z-0"></div>
 
-          {/* Actual Content Wrapper (z-10 to stay above bg decoration) */}
           <div className="relative z-10 w-full">
             
-            {/* Header / Breadcrumbs */}
             <div className="mb-10">
               <p className="text-sm font-bold text-gray-500 mb-3">
                 <Link to="/my-recipes" className="hover:text-gray-800">Mis recetas</Link> &rsaquo; <span className="text-gray-800">Categorías</span>
@@ -94,10 +83,8 @@ const Categories = () => {
               <p className="text-gray-600 font-bold text-lg">Crea y administra tus categorías para organizar mejor tus recetas.</p>
             </div>
 
-            {/* Two Column Layout for Forms and Lists */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
               
-              {/* LEFT COLUMN: Create Category */}
               <div>
                 <div className="bg-white rounded-3xl p-6 md:p-8 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] border border-gray-100 h-full">
                   <h2 className="text-2xl font-bold text-gray-800 mb-6">Crear categoría</h2>
@@ -138,12 +125,10 @@ const Categories = () => {
                 </div>
               </div>
 
-              {/* RIGHT COLUMN: Manage Categories List */}
               <div>
                 <div className="bg-white rounded-3xl p-6 md:p-8 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] border border-gray-100 h-full flex flex-col">
                   <h2 className="text-2xl font-bold text-gray-800 mb-6">Mis categorías</h2>
                   
-                  {/* Search bar */}
                   <div className="mb-6 relative">
                     <input 
                       type="text" 
@@ -154,7 +139,6 @@ const Categories = () => {
                     />
                   </div>
 
-                  {/* Categories List */}
                   <div className="space-y-4 max-h-[450px] overflow-y-auto pr-2 flex-grow">
                     {filteredCategories.length > 0 ? (
                       filteredCategories.map(category => (
@@ -177,9 +161,9 @@ const Categories = () => {
                 </div>
               </div>
 
-            </div> {/* End Two Column Layout */}
-          </div> {/* End Actual Content Wrapper */}
-        </div> {/* End Outer White Container */}
+            </div>
+          </div>
+        </div>
 
       </main>
     </div>

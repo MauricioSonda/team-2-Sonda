@@ -18,7 +18,6 @@ export default function RecipeDetail() {
   const [loading, setLoading] = useState(true);
   const [activeMediaUrl, setActiveMediaUrl] = useState(null);
   
-  // Comment form state
   const [commentBody, setCommentBody] = useState("");
   const [guestName, setGuestName] = useState("");
   const [rating, setRating] = useState(5);
@@ -48,12 +47,10 @@ export default function RecipeDetail() {
     e.preventDefault();
     setSubmitting(true);
     try {
-      // Submit rating
       await api.post(`/recipes/${id}/ratings`, {
         stars: rating,
         guest_name: isAuth ? undefined : (guestName || 'Invitado')
       });
-      // Submit comment
       if (commentBody.trim()) {
         const res = await api.post(`/recipes/${id}/comments`, {
           body: commentBody,
@@ -63,7 +60,6 @@ export default function RecipeDetail() {
         setCommentBody("");
       }
       toast.success('¡Opinión guardada correctamente!');
-      // Update recipe object to reflect new ratings if preferred (or just rely on the alert)
     } catch (err) {
       toast.error('Error al guardar opinión');
       console.error(err);
@@ -82,7 +78,6 @@ export default function RecipeDetail() {
   return (
     <div className="min-h-screen bg-white font-sans text-gray-800 flex flex-col">
       
-      {/* Full-width Top Header (Matches Explore) */}
       <header className="w-full h-24 bg-[#ffb800] px-8 flex justify-between items-center shadow-md relative z-50">
         <div className="max-w-[1600px] mx-auto w-full flex justify-between items-center h-full">
           <div className="flex items-center gap-6">
@@ -110,10 +105,8 @@ export default function RecipeDetail() {
         </div>
       </header>
 
-      {/* Main Content Area */}
       <main className="flex-grow w-full max-w-[1400px] mx-auto p-6 md:p-12 lg:p-16">
         
-        {/* Recipe Title & Meta */}
           <div className="mb-10">
             <h1 className="text-5xl md:text-7xl font-black text-[#1a2e35] mb-4 tracking-tight">{recipe.title}</h1>
             <div className="flex flex-wrap items-center gap-2 text-lg font-bold text-gray-700">
@@ -126,9 +119,7 @@ export default function RecipeDetail() {
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
             
-            {/* Left Column: Images, Ingredients, Instructions */}
             <div className="lg:col-span-8 flex flex-col gap-8">
-              {/* Helper to check and extract YouTube ID */}
               {(() => {
                 const getYouTubeId = (url) => {
                   if (!url) return null;
@@ -142,7 +133,6 @@ export default function RecipeDetail() {
 
                 return (
                   <>
-                    {/* Main Image or Video */}
                     <div className="rounded-[2.5rem] overflow-hidden shadow-md border-2 border-transparent bg-black aspect-[16/10] flex items-center justify-center">
                       {mainYtId ? (
                         <iframe 
@@ -157,7 +147,6 @@ export default function RecipeDetail() {
                       )}
                     </div>
 
-                    {/* Gallery Thumbnails */}
                     {recipe.media && recipe.media.length > 1 && (
                       <div className="grid grid-cols-5 gap-4">
                         {recipe.media.map((img, idx) => {
@@ -190,7 +179,6 @@ export default function RecipeDetail() {
                 );
               })()}
 
-              {/* Action Bar (Time, Rating, Tags) */}
               <div className="flex flex-wrap gap-4 items-center">
                 <div className="bg-[#f5f5f5] px-6 py-3 rounded-2xl flex items-center gap-2 font-bold text-gray-700">
                   <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
@@ -211,7 +199,6 @@ export default function RecipeDetail() {
                 )}
               </div>
 
-              {/* Ingredients Card */}
               <div className="bg-white border-2 border-[#f0f0f0] rounded-[2.5rem] p-10 shadow-sm mt-4">
                 <h3 className="text-3xl font-black text-[#1a2e35] mb-6">Ingredientes</h3>
                 <ul className="flex flex-col gap-3">
@@ -228,7 +215,6 @@ export default function RecipeDetail() {
                 </ul>
               </div>
 
-              {/* Instructions Section */}
               <div className="mt-8">
                 <h3 className="text-3xl font-black text-[#1a2e35] mb-6 px-2">Preparación</h3>
                 <div className="flex flex-col gap-6 px-2">
@@ -243,14 +229,27 @@ export default function RecipeDetail() {
 
             </div>
 
-            {/* Right Column: Sidebar (Actions & Reviews) */}
             <div className="lg:col-span-4 flex flex-col gap-8">
               
               <Link to="/explore" className="w-full bg-[#f8f5f0] hover:bg-gray-200 text-gray-800 font-bold text-center text-lg py-4 rounded-[1.5rem] transition-colors">
                 Volver al feed
               </Link>
+
+            {recipe?.steps?.length > 0 && (
+              <Link
+                to={`/recipe/${id}/cook`}
+                className="w-full bg-[#1a2e35] hover:bg-[#2a3e4a] text-white font-black text-lg py-4 rounded-[1.5rem] transition-colors flex items-center justify-center gap-3 shadow-md"
+              >
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5"
+                    d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5"
+                    d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Modo cocina paso a paso
+              </Link>
+            )}
               
-              {/* Leave Review Form */}
               <form onSubmit={handleSubmitReview} className="bg-white border-2 border-[#f0f0f0] rounded-[2rem] p-8 shadow-sm flex flex-col gap-4">
                 <h4 className="text-2xl font-black text-[#1a2e35]">Dejar Opinión</h4>
                 
@@ -276,7 +275,6 @@ export default function RecipeDetail() {
                 </button>
               </form>
 
-              {/* Reviews List */}
               <div className="bg-white border-2 border-[#f0f0f0] rounded-[2rem] p-8 shadow-sm">
                 <h4 className="text-2xl font-black text-[#1a2e35] mb-6">Comentarios</h4>
                 

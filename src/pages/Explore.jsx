@@ -69,7 +69,6 @@ function RecipeCard({ recipe }) {
   );
 }
 
-// Custom Dropdown Component for better UI and accessibility
 function CustomDropdown({ label, options, value, onChange }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -125,9 +124,7 @@ export default function Explore() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch categories on mount
     api.get('/categories').then(res => setDbCategories(res.data.data)).catch(console.error);
-    // Fetch all published recipes to extract unique authors
     api.get('/recipes', { params: { per_page: 50 } }).then(res => {
       const data = res.data.data || [];
       const uniqueAuthors = [];
@@ -176,14 +173,13 @@ export default function Explore() {
     if (page === 1) {
       fetchRecipes(1);
     } else {
-      setPage(1); // will trigger useEffect
+      setPage(1);
     }
   };
 
   return (
     <div className="min-h-screen bg-[#fafafa] flex flex-col font-sans text-[#1a2e35]">
       
-      {/* Top Header */}
       <header className="w-full h-24 bg-[#ffb800] px-8 flex justify-between items-center shadow-md relative z-50">
         <div className="max-w-[1600px] mx-auto w-full flex justify-between items-center h-full">
           <div className="flex items-center gap-6">
@@ -211,11 +207,9 @@ export default function Explore() {
         </div>
       </header>
 
-      {/* Hero / Search Section */}
       <div className="w-full max-w-[95%] mx-auto px-4 mt-12 mb-16">
         <section className="relative w-full bg-white rounded-[4rem] shadow-[0_30px_70px_rgba(0,0,0,0.12)] flex flex-col items-center justify-center py-24 px-10 border border-gray-100">
           
-          {/* Background Blobs - Using a separate absolute wrapper with overflow-hidden to contain the blob without clipping the dropdowns below */}
           <div className="absolute inset-0 rounded-[4rem] overflow-hidden pointer-events-none" aria-hidden="true">
             <div 
               className="absolute top-0 right-0 w-[55%] h-full bg-[#fce08b] opacity-60"
@@ -228,10 +222,8 @@ export default function Explore() {
             Busca y encuentra <strong className="text-green-600">recetas deliciosas</strong> para inspirarte a cocinar.
           </p>
 
-          {/* Search Bar Capsule - Final Refinement for 1584px Viewport */}
           <div className="bg-[#f0f4f0] rounded-[4rem] p-4 flex flex-wrap 2xl:flex-nowrap items-center gap-2 w-full max-w-[99%] z-20 shadow-sm relative">
             
-            {/* MAIN SEARCH INPUT - MAXIMIZED BREATHING ROOM */}
             <div className="bg-white rounded-3xl flex-[3] min-w-[300px] flex items-center shadow-md border-3 border-transparent focus-within:border-green-500 transition-all">
               <input 
                 type="text" 
@@ -267,7 +259,6 @@ export default function Explore() {
               </div>
             </div>
 
-            {/* AUTHOR FILTER */}
             <div className="flex-[0.7] min-w-[145px]">
               <div className="relative">
                 <button 
@@ -292,8 +283,6 @@ export default function Explore() {
               </div>
             </div>
 
-            {/* Date and Search sections will be merged here. Left blank purposefully because I will replace it alongside next chunk. */}
-            {/* DATE RANGE PICKER - COMPACT FOR 1584px */}
             <div className="bg-white rounded-3xl flex-[1] min-w-[270px] flex items-center gap-1 px-3 py-4 shadow-md border-3 border-transparent hover:border-green-500 transition-all">
               <div className="flex flex-col flex-1 min-w-[105px]">
                 <span className="text-[9px] uppercase font-black text-gray-400 ml-1 mb-0.5">Desde</span>

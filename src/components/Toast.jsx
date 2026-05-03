@@ -6,7 +6,6 @@ export function useToast() {
   return useContext(ToastContext);
 }
 
-// Individual Toast component
 function ToastItem({ toast, onRemove }) {
   const [isExiting, setIsExiting] = useState(false);
 
@@ -75,7 +74,6 @@ function ToastItem({ toast, onRemove }) {
   );
 }
 
-// Confirm Modal component
 function ConfirmModal({ modal, onClose }) {
   if (!modal) return null;
 
@@ -114,7 +112,6 @@ function ConfirmModal({ modal, onClose }) {
   );
 }
 
-// Toast Provider
 export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([]);
   const [confirmModal, setConfirmModal] = useState(null);
@@ -151,17 +148,14 @@ export function ToastProvider({ children }) {
     <ToastContext.Provider value={{ showToast, success, error, warning, info, confirm }}>
       {children}
 
-      {/* Toast container */}
       <div className="fixed top-6 right-6 z-[9998] flex flex-col gap-3 pointer-events-auto">
         {toasts.map((toast) => (
           <ToastItem key={toast.id} toast={toast} onRemove={removeToast} />
         ))}
       </div>
 
-      {/* Confirm modal */}
       <ConfirmModal modal={confirmModal} onClose={handleConfirmClose} />
 
-      {/* CSS animations */}
       <style>{`
         @keyframes slideIn {
           from { opacity: 0; transform: translateX(40px); }

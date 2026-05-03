@@ -6,7 +6,7 @@ import tomateImg from '../assets/tomate.png';
 import customLogo from '../assets/logo.png';
 import recipeImg from '../assets/recipe_placeholder.png';
 import { useToast } from '../components/Toast';
-
+import { openCategoryModal, openImageModal } from '../components/Modals';
 
 
 function MyRecipes() {
@@ -27,12 +27,10 @@ function MyRecipes() {
 
     const fetchMyRecipes = async () => {
       try {
-        // Fetch user profile
         const userRes = await api.get('/auth/me');
         setUserName(userRes.data?.data?.name || userRes.data?.name || 'Chef');
 
-        // Fetch user recipes
-        const res = await api.get('/recipes?mine=1');
+        const res = await api.get('/recipes?mine=true');
         setRecipes(res.data.data);
       } catch (err) {
         if (err.response?.status === 401) {
@@ -72,8 +70,7 @@ function MyRecipes() {
         if (msg.toLowerCase().includes('foto') || msg.toLowerCase().includes('image')) {
           const goGallery = await toast.confirm(msg + '\n\n¿Quieres ir a la galería para subir una foto ahora?', { confirmText: 'Ir a galería' });
           if (goGallery) {
-
-            navigate(`/edit/${id}/media`);
+            openImageModal(id);
           }
           return;
         }
@@ -101,10 +98,11 @@ function MyRecipes() {
 
   const currentList = activeTab === 'publicadas' ? publishedRecipes : draftRecipes;
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center font-bold text-2xl">Cargando mis recetas...</div>;  return (
+  if (loading) return <div className="min-h-screen flex items-center justify-center font-bold text-2xl">Cargando mis recetas...</div>;
+
+  return (
     <div className="min-h-screen bg-[#f9fafb] font-sans text-gray-800 flex flex-col relative overflow-hidden">
       
-      {/* Full-width Top Header */}
       <header className="w-full h-24 bg-[#ffb800] px-8 flex justify-between items-center shadow-md relative z-50">
         <div className="max-w-[1600px] mx-auto w-full flex justify-between items-center h-full">
           <div className="flex items-center gap-4">
@@ -115,31 +113,26 @@ function MyRecipes() {
           </div>
           <div className="flex gap-4">
             <Link to="/explore" className="px-6 py-2.5 outline outline-2 outline-white text-white font-black text-lg md:text-xl rounded-full hover:bg-white/10 transition-colors hidden sm:block">Explorar Recetas</Link>
+            <Link to="/premium" className="px-6 py-2.5 bg-[#fff3cd] text-[#d48c00] font-black text-lg md:text-xl rounded-full shadow hover:bg-yellow-100 transition-colors border-2 border-[#fde68a] hidden md:block">✦ Premium</Link>
             <button onClick={handleLogout} className="px-6 py-2.5 bg-white text-red-500 font-black text-lg md:text-xl rounded-full shadow hover:bg-gray-50 transition-colors border-2 border-red-100">Cerrar Sesión</button>
           </div>
         </div>
       </header>
 
-      {/* Main Content Area */}
       <main className="flex-grow w-full max-w-[1500px] mx-auto p-4 md:p-8 lg:p-12 relative z-10">
         
-        {/* Single Outer Container for all info */}
         <div className="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-sm border border-gray-100 flex flex-col xl:flex-row gap-12 relative overflow-hidden min-h-[700px]">
           
-          {/* Decorative background element inside the white wrapper */}
           <div className="absolute top-0 right-0 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-[#fef3c7] rounded-bl-full opacity-60 pointer-events-none z-0"></div>
 
-          {/* Left Column (Main Content) */}
           <div className="flex-grow lg:w-2/3 relative z-10">
             
-            {/* Header Texts */}
             <div className="mb-10">
               <h1 className="text-4xl md:text-5xl font-black text-[#1a2e35] mb-3">Mis recetas</h1>
               <h2 className="text-3xl text-gray-700 font-bold mb-2">Hola, {userName}</h2>
               <p className="text-gray-500 font-bold text-lg">desde aquí puedes gestionar tus recetas</p>
             </div>
 
-            {/* Tabs */}
             <div className="flex justify-between items-center border-b border-gray-200 mb-8 w-full pr-2">
               <div className="flex gap-8">
                 <button 
@@ -157,12 +150,9 @@ function MyRecipes() {
                   {activeTab === 'borradores' && <div className="absolute bottom-[-2px] left-0 w-full h-[3px] bg-[#ffb800]"></div>}
                 </button>
               </div>
-              <Link to="/categories" className="pb-4 text-lg font-bold text-[#1e8b4d] hover:text-green-800 transition-colors hidden sm:block">
-                Administrar Categorías &rsaquo;
-              </Link>
+              <button onClick={() => openCategoryModal()} className="pb-4 text-lg font-bold text-[#1e8b4d] hover:text-green-800 transition-colors hidden sm:block bg-transparent">Administrar Categorías ›</button>
             </div>
 
-            {/* Filters Bar */}
             <div className="flex flex-wrap gap-4 mb-8">
               <div className="flex-grow min-w-[250px]">
                 <input type="text" placeholder="Buscar en mis recetas..." className="w-full border border-gray-200 rounded-xl px-5 py-3 font-bold text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#ffb800] focus:border-transparent transition-all shadow-sm" />
@@ -182,7 +172,6 @@ function MyRecipes() {
               </button>
             </div>
 
-            {/* Recipe Cards List */}
             <div className="space-y-5">
               {currentList.length === 0 ? (
                 <div className="py-12 text-center">
@@ -224,9 +213,7 @@ function MyRecipes() {
 
           </div>
 
-          {/* Right Column (Call to Actions) */}
           <div className="xl:w-1/3 flex flex-col gap-6 relative z-10 pt-4 xl:pt-16">
-                        {/* 1. Card para cuando NO hay recetas publicadas */}
               {publishedRecipes.length === 0 && (
                 <div className="bg-[#f8f5f0] rounded-[2rem] p-8 text-center shadow-sm">
                   <div className="w-24 h-24 rounded-full mx-auto flex items-center justify-center mb-6 shadow-sm overflow-hidden">
@@ -241,7 +228,6 @@ function MyRecipes() {
                 </div>
               )}
 
-              {/* 2. Card para cuando NO hay borradores */}
               {draftRecipes.length === 0 && (
                 <div className="bg-white border-2 border-[#f0f0f0] rounded-[2rem] p-8 text-center shadow-sm">
                   <div className="w-24 h-24 rounded-full mx-auto flex items-center justify-center mb-6 overflow-hidden">

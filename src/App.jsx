@@ -8,37 +8,39 @@ import RecipeEditor from './pages/RecipeEditor'
 import MyRecipes from './pages/MyRecipes'
 import Categories from './pages/Categories'
 import RecipeMedia from './pages/RecipeMedia'
+import Premium from './pages/Premium'
+import PremiumSuccess from './pages/PremiumSuccess'
+import PremiumCancel from './pages/PremiumCancel'
 import './index.css'
 import { ToastProvider } from './components/Toast'
+import { PremiumRoute } from './components/PremiumRoute'
+import CookingMode from './pages/CookingMode'
 
-
-const ProtectedRoute = ({ children }) => {
-  const token = localStorage.getItem('access_token');
-  if (!token) {
-    return <Navigate to="/login" replace />;
-  }
-  return children;
-};
 
 function App() {
   return (
     <ToastProvider>
       <BrowserRouter>
 
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/explore" element={<Explore />} />
-        <Route path="/recipe/:id" element={<RecipeDetail />} />
-        
-        {/* Protected Routes */}
-        <Route path="/create" element={<ProtectedRoute><RecipeEditor /></ProtectedRoute>} />
-        <Route path="/edit/:id" element={<ProtectedRoute><RecipeEditor /></ProtectedRoute>} />
-        <Route path="/my-recipes" element={<ProtectedRoute><MyRecipes /></ProtectedRoute>} />
-        <Route path="/categories" element={<ProtectedRoute><Categories /></ProtectedRoute>} />
-        <Route path="/edit/:id/media" element={<ProtectedRoute><RecipeMedia /></ProtectedRoute>} />
-      </Routes>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+
+          <Route path="/premium" element={<Premium />} />
+          <Route path="/premium/success" element={<PremiumSuccess />} />
+          <Route path="/premium/cancel" element={<PremiumCancel />} />
+
+          <Route path="/explore" element={<PremiumRoute><Explore /></PremiumRoute>} />
+          <Route path="/recipe/:id" element={<PremiumRoute><RecipeDetail /></PremiumRoute>} />
+          <Route path="/create" element={<RecipeEditor />} />
+          <Route path="/edit/:id" element={<RecipeEditor />} />
+          <Route path="/my-recipes" element={<MyRecipes />} />
+          <Route path="/categories" element={<Categories />} />
+          <Route path="/edit/:id/media" element={<RecipeMedia />} />
+
+          <Route path="/recipe/:id/cook" element={<CookingMode />} />
+        </Routes>
       </BrowserRouter>
     </ToastProvider>
   )

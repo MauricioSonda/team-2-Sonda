@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { openCategoryModal, openImageModal } from '../components/Modals';
 import { api } from '../api/axios';
 import tomateImg from '../assets/tomate.png';
 import customLogo from '../assets/logo.png';
@@ -35,11 +36,9 @@ function RecipeEditor() {
 
 
   useEffect(() => {
-    // Load categories
     api.get('/categories').then(res => setDbCategories(res.data.data)).catch(console.error);
 
     if (isEditMode) {
-      // Load recipe for editing
       api.get(`/recipes/${id}`).then(res => {
         const data = res.data.data;
         setTitle(data.title || '');
@@ -111,7 +110,7 @@ function RecipeEditor() {
       description,
       prep_time_minutes: prepTime ? parseInt(prepTime) : null,
       servings: servings ? parseInt(servings) : null,
-      status: status, // 'draft' or 'published'
+      status: status,
       category_ids: selectedCategories,
       ingredients: ingredients.filter(i => i.value.trim()).map(i => ({ name: i.value })),
       steps: steps.filter(s => s.value.trim()).map(s => ({ instruction: s.value }))
@@ -142,12 +141,9 @@ function RecipeEditor() {
   };
 
   if (loading) return <div className="text-center py-20 bg-white min-h-screen text-2xl font-black text-gray-800">Cargando editor...</div>;
-  // Handled above
-
   return (
     <div className="min-h-screen bg-[#f9fafb] font-sans text-gray-800 flex flex-col">
       
-      {/* Full-width Top Header */}
       <header className="w-full h-24 bg-[#ffb800] px-8 flex justify-between items-center shadow-md relative z-50">
         <div className="max-w-[1600px] mx-auto w-full flex justify-between items-center h-full">
           <div className="flex items-center gap-4">
@@ -173,19 +169,14 @@ function RecipeEditor() {
         </div>
       </header>
 
-      {/* Main Content Area */}
       <main className="flex-grow w-full max-w-[1400px] mx-auto p-4 md:p-8 lg:p-12 relative z-10">
 
-        {/* Single Outer Container for all info */}
         <div className="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-sm border border-gray-100 flex flex-col lg:flex-row gap-8 lg:gap-16 relative overflow-hidden min-h-[800px]">
           
-          {/* Decorative background element inside the white wrapper */}
           <div className="absolute top-0 right-0 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-[#fef3c7] rounded-bl-full opacity-60 pointer-events-none z-0"></div>
 
-          {/* Left Column (Forms) */}
           <div className="flex-grow space-y-12 lg:w-2/3 xl:w-3/4 relative z-10">
             
-            {/* Breadcrumb & Title */}
             <div className="mb-4">
               <p className="text-sm font-bold text-gray-500 mb-3">
                 <Link to="/my-recipes" className="hover:text-gray-800">Mis recetas</Link> &rsaquo; <span className="text-gray-800">Crear receta</span>
@@ -194,7 +185,6 @@ function RecipeEditor() {
               <p className="text-gray-600 font-bold text-lg">Completa los datos y guarda como borrador o publica cuando estés listo.</p>
             </div>
 
-            {/* Datos Básicos Section */}
             <div>
               <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">Datos básicos</h2>
               
@@ -237,7 +227,6 @@ function RecipeEditor() {
               </div>
             </div>
 
-            {/* Ingredientes Section */}
             <div>
               <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">Ingredientes</h2>
               
@@ -266,7 +255,6 @@ function RecipeEditor() {
               </div>
             </div>
 
-            {/* Pasos Section */}
             <div>
               <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">Pasos</h2>
               
@@ -295,7 +283,6 @@ function RecipeEditor() {
               </div>
             </div>
 
-            {/* Categorías Section */}
             <div>
               <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">Categorías</h2>
               
@@ -309,14 +296,13 @@ function RecipeEditor() {
                     {cat.name}
                   </button>
                 ))}
-                <Link to="/categories" className="px-5 py-2 border-2 border-gray-400 text-gray-500 font-bold rounded-full hover:bg-gray-50 transition-colors text-center inline-block">+ Administrar nuevas</Link>
+                <button onClick={() => openCategoryModal()} className="px-5 py-2 border-2 border-gray-400 text-gray-500 font-bold rounded-full hover:bg-gray-50 transition-colors text-center inline-block">+ Administrar nuevas</button>
               </div>
               <p className="text-sm font-bold text-gray-500">Tip: selecciona 1-3 categorías para que sea más fácil encontrar tu receta.</p>
             </div>
 
           </div>
 
-          {/* Right Column (Sticky Actions) */}
           <div className="lg:w-1/3 xl:w-1/4">
             <div className="sticky top-8">
               <h2 className="text-xl font-bold text-gray-800 mb-2 border-b pb-2 lg:border-none lg:pb-0">Acciones</h2>
@@ -334,9 +320,9 @@ function RecipeEditor() {
                 <hr className="my-6 border-gray-200" />
                 
                 {isEditMode ? (
-                  <Link to={`/edit/${id}/media`} className="w-full py-3 bg-[#f3f4f6] text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition-colors text-sm flex justify-center items-center">
+                  <button onClick={() => openImageModal(id, { onUploadSuccess: () => setHasMainImage(true) })} className="w-full py-3 bg-[#f3f4f6] text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition-colors text-sm flex justify-center items-center">
                     Administrar fotos (galería)
-                  </Link>
+                  </button>
                 ) : (
                   <div className="w-full py-3 bg-gray-50 text-gray-400 font-bold rounded-xl border border-dashed border-gray-200 text-sm flex justify-center items-center text-center px-4">
                     Guarda el borrador primero para subir fotos

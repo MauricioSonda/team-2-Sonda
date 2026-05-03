@@ -53,10 +53,8 @@ export default function Register() {
   return (
     <div className="min-h-screen bg-[#ffb800] relative overflow-hidden flex flex-col font-sans">
       
-      {/* Top Header Franja Naranja */}
       <header className="relative z-50 w-full h-24 bg-[#ffb800] px-8 flex justify-between items-center flex-shrink-0 shadow-md">
         <div className="max-w-[1600px] mx-auto w-full flex justify-between items-center h-full">
-          {/* Left Side: Logo */}
           <div className="flex items-center gap-6">
             <Link to="/" className="flex items-center group gap-4">
               <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-inner transform group-hover:scale-105 transition-transform overflow-hidden p-2">
@@ -66,7 +64,6 @@ export default function Register() {
             </Link>
           </div>
           
-          {/* Navigation Buttons (Pill style) */}
           <div className="flex gap-4">
             <Link to="/login" className="px-6 py-2.5 bg-white text-[#ffb800] font-black text-lg md:text-xl rounded-full shadow hover:bg-gray-50 transition-colors">
               Ingresar
@@ -78,34 +75,28 @@ export default function Register() {
         </div>
       </header>
 
-      {/* Main Content Area (Background Blobs & Split Layout) */}
       <div className="relative flex-grow flex items-center justify-center w-full overflow-hidden bg-[#faf9f6]">
         
-        {/* BLOB 1: Blanco/crema grande a la derecha */}
         <div 
           className="absolute top-[-10%] right-[-5%] w-[120%] md:w-[65%] h-[120%] bg-white z-0 shadow-sm" 
           style={{ borderBottomLeftRadius: '900px 700px', borderTopLeftRadius: '200px' }}
           aria-hidden="true"
         ></div>
         
-        {/* BLOB 2: Único naranja grande en la izquierda superior */}
         <div 
           className="absolute top-0 left-0 w-[80%] md:w-[45%] h-[60%] md:h-[70%] bg-[#ffb800]/80 z-0"
           style={{ borderBottomRightRadius: '100% 70%' }}
           aria-hidden="true"
         ></div>
 
-        {/* BLOB 3: Único naranja pequeño en la esquina inferior izquierda */}
         <div 
           className="absolute bottom-[-5%] left-[-5%] w-[40%] md:w-[35%] h-[15%] md:h-[20%] bg-[#ffb800]/80 z-0"
           style={{ borderTopRightRadius: '100% 120%' }}
           aria-hidden="true"
         ></div>
 
-        {/* Inner Content Reversed for Register */}
         <main className="relative z-10 flex flex-col md:flex-row-reverse items-center justify-center max-w-7xl mx-auto w-full px-6 py-6 gap-12">
         
-        {/* Right Side: Chef Image */}
         <div className="hidden md:flex w-1/2 justify-center items-center relative">
           <img 
             src={chefImg} 
@@ -115,7 +106,6 @@ export default function Register() {
           />
         </div>
 
-        {/* Left Side: Register Card */}
         <div className="w-full md:w-1/2 flex justify-center mt-8 md:mt-0">
           <div className="bg-white rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.1)] p-8 md:p-12 max-w-md w-full flex flex-col relative overflow-hidden border border-gray-50">
             
@@ -132,7 +122,6 @@ export default function Register() {
 
             <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
               
-              {/* Name Input */}
               <div className="flex flex-col">
                 <label className="text-gray-600 font-semibold mb-1 text-sm">Nombre completo</label>
                 <div className="relative">
@@ -147,7 +136,6 @@ export default function Register() {
                 </div>
               </div>
 
-              {/* Email Input */}
               <div className="flex flex-col">
                 <label className="text-gray-600 font-semibold mb-1 text-sm">Correo electrónico</label>
                 <div className="relative">
@@ -162,7 +150,6 @@ export default function Register() {
                 </div>
               </div>
 
-              {/* Password Input */}
               <div className="flex flex-col">
                 <label className="text-gray-600 font-semibold mb-1 text-sm">Contraseña</label>
                 <div className="relative">
@@ -177,7 +164,6 @@ export default function Register() {
                 </div>
               </div>
 
-              {/* Confirm Password Input */}
               <div className="flex flex-col">
                 <label className="text-gray-600 font-semibold mb-1 text-sm">Confirmar Contraseña</label>
                 <div className="relative">
@@ -192,7 +178,6 @@ export default function Register() {
                 </div>
               </div>
 
-              {/* Submit Button */}
               <button 
                 type="submit" 
                 disabled={loading}
@@ -202,7 +187,6 @@ export default function Register() {
               </button>
             </form>
 
-            {/* Login Link */}
             <p className="text-center mt-6 text-gray-500 font-medium">
               ¿Ya tienes una cuenta? <Link to="/login" className="text-[#5c7a33] font-bold hover:underline">Iniciar sesión</Link>
             </p>
