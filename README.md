@@ -209,7 +209,3 @@ git push origin main
 ```
 
 ---
-
-## Equipo
-
-Proyecto desarrollado por el equipo 2 — curso de desarrollo web.
